@@ -26,14 +26,12 @@ public class RobotMap {
     
     // Relay ports (solenoids)
     // Based off the list found here (1/21/15): http://oswegofirst.org/forum/viewtopic.php?f=12&t=2968
-    public static final int collectorA = 0;
-    public static final int collectorB = 1;
-    public static final int leftArm = 2;
-    public static final int rightArm = 3;
-    public static final int hooksA = 4;
-    public static final int hooksB = 5;
-    public static final int toteGrabber = 6;
-    public static final int chopSticks = 7;
+    public static final int collector = 0;
+    public static final int leftArm = 1;
+    public static final int rightArm = 2;
+    public static final int hooks = 3;
+    public static final int toteGrabber = 4;
+    public static final int chopSticks = 5;
     
     // Analog ports
     public static final int gyroRate = 0; // Gyro MUST be on either 0 or 1
