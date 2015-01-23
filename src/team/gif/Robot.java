@@ -1,6 +1,7 @@
 
 package team.gif;
 
+import team.gif.commands.InitDrivetrain;
 import team.gif.subsystems.*;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,12 +20,16 @@ public class Robot extends IterativeRobot {
 	public static final Drivetrain chassis = new Drivetrain();
 	public static OI oi;
 
+	Command driveInit;
+	
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
 		oi = new OI();
+		driveInit = new InitDrivetrain();
+		driveInit.start();
     }
 	
 	public void disabledPeriodic() {
