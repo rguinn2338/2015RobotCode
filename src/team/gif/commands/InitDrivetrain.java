@@ -18,6 +18,7 @@ public class InitDrivetrain extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.chassis.initEncoders();
     	Robot.chassis.enableMotors(ControlMode.PercentVbus);
     	done = true;
     }
@@ -28,7 +29,7 @@ public class InitDrivetrain extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return done;
     }
 
     // Called once after isFinished returns true

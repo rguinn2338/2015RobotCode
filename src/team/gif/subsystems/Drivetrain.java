@@ -1,12 +1,15 @@
 package team.gif.subsystems;
 
+import team.gif.Globals;
 import team.gif.RobotMap;
+import team.gif.commands.TankDriveLinear;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ * @author PatrickUbelhor
  */
 public class Drivetrain extends Subsystem {
     
@@ -14,6 +17,38 @@ public class Drivetrain extends Subsystem {
 	private static final CANTalon frontRight = new CANTalon(RobotMap.frontRight);
 	private static final CANTalon rearLeft = new CANTalon(RobotMap.rearLeft);
 	private static final CANTalon rearRight = new CANTalon(RobotMap.rearRight);
+	
+	private static final Encoder leftEncoder = new Encoder(RobotMap.leftEncoderA, RobotMap.leftEncoderB);
+	private static final Encoder rightEncoder = new Encoder(RobotMap.rightEncoderA, RobotMap.rightEncoderB);
+	
+	public void initEncoders() {
+		leftEncoder.setDistancePerPulse(Globals.encoderDistPerTick);
+		rightEncoder.setDistancePerPulse(Globals.encoderDistPerTick);
+		
+		leftEncoder.setReverseDirection(Globals.leftEncoderReversed);
+		rightEncoder.setReverseDirection(Globals.rightEncoderReversed);
+	}
+	
+	public void resetEncoders() {
+		leftEncoder.reset();
+		rightEncoder.reset();
+	}
+	
+	public int getLeftTicks() {
+		return leftEncoder.get();
+	}
+	
+	public int getRightTicks() {
+		return rightEncoder.get();
+	}
+	
+	public double getLeftDist() {
+		return leftEncoder.getDistance();
+	}
+	
+	public double getRightDist() {
+		return rightEncoder.getDistance();
+	}
 	
 	public void enableMotors(ControlMode controlMode) {
 		frontLeft.changeControlMode(controlMode);
@@ -42,8 +77,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new TankDriveLinear());
     }
 }
 
