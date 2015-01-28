@@ -8,7 +8,6 @@ public class Globals {
 	 * DO NOT EDIT UNLESS YOU KNOW WHAT YOU ARE DOING. PLEASE CONSULT SOMEONE WHO DOES.
 	 */
 	
-	public static final double elevatorSpeed = 0;
 	public static final double collectorSpeed = 0;
 	public static final double pusherSpeed = 0;
 	

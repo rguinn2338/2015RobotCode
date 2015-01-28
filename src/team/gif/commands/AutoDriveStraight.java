@@ -6,8 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * @author PatrickUbelhor
- * TODO: Split the drivetrain into two parts (right and left). Make two commands,
- * one for controlling each side. Use CommandGroups to synchronize movement.
+ * TODO: Convert into a PID loop.
  */
 public class AutoDriveStraight extends Command {
 	

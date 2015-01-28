@@ -6,6 +6,10 @@ import team.gif.commands.TankDriveLinear;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SerialPort.Parity;
+import edu.wpi.first.wpilibj.SerialPort.Port;
+import edu.wpi.first.wpilibj.SerialPort.StopBits;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -20,6 +24,18 @@ public class Drivetrain extends Subsystem {
 	
 	private static final Encoder leftEncoder = new Encoder(RobotMap.leftEncoderA, RobotMap.leftEncoderB);
 	private static final Encoder rightEncoder = new Encoder(RobotMap.rightEncoderA, RobotMap.rightEncoderB);
+	
+	private static final SerialPort ultraSonic = new SerialPort(9600, Port.kOnboard, 8, Parity.kNone, StopBits.kOne);
+	
+	public String getUltraDist() {
+		byte[] display = ultraSonic.read(4);
+    	String disp1 = Byte.toString(display[0]);
+    	String disp2 = Byte.toString(display[1]);
+    	String disp3 = Byte.toString(display[2]);
+    	String disp4 = Byte.toString(display[3]);
+    	String combined = disp1 + disp2 + disp3 + disp4;
+        return combined;
+	}
 	
 	public void initEncoders() {
 		leftEncoder.setDistancePerPulse(Globals.encoderDistPerTick);
