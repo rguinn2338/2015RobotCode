@@ -1,5 +1,6 @@
 package team.gif;
 
+import team.gif.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -26,6 +27,7 @@ public class OI {
 	private static Button right2;
 	private static Button right3;
 	private static Button right4;
+	private static Button right5;
 	
 	private static Button auxTrigger;
 	private static Button aux2;
@@ -42,11 +44,17 @@ public class OI {
 		right2 = new JoystickButton(rightStick, 2);
 		right3 = new JoystickButton(rightStick, 3);
 		right4 = new JoystickButton(rightStick, 4);
+		right5 = new JoystickButton(rightStick, 5);
 		
 		auxTrigger = new JoystickButton(auxStick, 1);
 		aux2 = new JoystickButton(auxStick, 2);
 		aux3 = new JoystickButton(auxStick, 3);
 		aux4 = new JoystickButton(auxStick, 4);
+		
+		rightTrigger.whenReleased(new TankDriveLinear());
+		right2.whenReleased(new TankDriveSquared());
+		right4.whenReleased(new AutoDriveStraight(3.0));
+		right5.whenReleased(new AutoDriveStraight(6.0));
 	}
 	
 }
