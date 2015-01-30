@@ -2,6 +2,7 @@
 package team.gif;
 
 import team.gif.commands.InitDrivetrain;
+import team.gif.commands.InitElevator;
 import team.gif.subsystems.*;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,8 +20,11 @@ public class Robot extends IterativeRobot {
 
 	public static final Drivetrain chassis = new Drivetrain();
 	public static OI oi;
+	
+	public static final Elevator elevator = new Elevator();
 
 	Command driveInit;
+	Command elevInit;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -30,6 +34,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		driveInit = new InitDrivetrain();
 		driveInit.start();
+		
+		elevInit = new InitElevator();
+		elevInit.start();
     }
 	
 	public void disabledPeriodic() {
