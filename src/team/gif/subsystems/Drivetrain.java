@@ -5,11 +5,7 @@ import team.gif.RobotMap;
 import team.gif.commands.TankDriveLinear;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.SerialPort.Parity;
-import edu.wpi.first.wpilibj.SerialPort.Port;
-import edu.wpi.first.wpilibj.SerialPort.StopBits;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -22,74 +18,77 @@ public class Drivetrain extends Subsystem {
 	private static final CANTalon rearLeft = new CANTalon(RobotMap.rearLeft);
 	private static final CANTalon rearRight = new CANTalon(RobotMap.rearRight);
 	
-	private static final Encoder leftEncoder = new Encoder(RobotMap.leftEncoderA, RobotMap.leftEncoderB);
-	private static final Encoder rightEncoder = new Encoder(RobotMap.rightEncoderA, RobotMap.rightEncoderB);
-	
-	private static final SerialPort ultraSonic = new SerialPort(9600, Port.kOnboard, 8, Parity.kNone, StopBits.kOne);
-	
-	public String getUltraDist() {
-		byte[] display = ultraSonic.read(4);
-    	String disp1 = Byte.toString(display[0]);
-    	String disp2 = Byte.toString(display[1]);
-    	String disp3 = Byte.toString(display[2]);
-    	String disp4 = Byte.toString(display[3]);
-    	String combined = disp1 + disp2 + disp3 + disp4;
-        return combined;
-	}
-	
-	public void initEncoders() {
-		leftEncoder.setDistancePerPulse(Globals.encoderDistPerTick);
-		rightEncoder.setDistancePerPulse(Globals.encoderDistPerTick);
-		
-		leftEncoder.setReverseDirection(Globals.leftEncoderReversed);
-		rightEncoder.setReverseDirection(Globals.rightEncoderReversed);
-	}
-	
-	public void resetEncoders() {
-		leftEncoder.reset();
-		rightEncoder.reset();
-	}
-	
 	public int getLeftTicks() {
-		return leftEncoder.get();
+		return frontLeft.getEncPosition();
 	}
 	
 	public int getRightTicks() {
-		return rightEncoder.get();
+		return frontRight.getEncPosition();
 	}
 	
-	public double getLeftDist() {
-		return leftEncoder.getDistance();
+	public void initBase(boolean leftEncoderReversed, boolean rightEncoderReversed,
+						 boolean leftMotorsReversed, boolean rightMotorsReversed) {
+		frontLeft.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		frontRight.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		
+		rearLeft.changeControlMode(ControlMode.Follower);
+		rearRight.changeControlMode(ControlMode.Follower);
+		
+		frontLeft.reverseSensor(leftEncoderReversed);
+		frontRight.reverseSensor(rightEncoderReversed);
+		
+		frontLeft.reverseOutput(leftMotorsReversed);
+		frontRight.reverseOutput(rightMotorsReversed);
 	}
 	
-	public double getRightDist() {
-		return rightEncoder.getDistance();
+	public void enableAutoControl() {
+		disableMotors();
+		
+		enableMotors(ControlMode.Position, frontLeft.getEncPosition(), frontRight.getEncPosition());
+		
+		frontLeft.setPID(Globals.drivetrainP, Globals.drivetrainI, Globals.drivetrainD);
+		frontRight.setPID(Globals.drivetrainP, Globals.drivetrainI, Globals.drivetrainD);
 	}
 	
-	public void enableMotors(ControlMode controlMode) {
+	public void enableTeleopControl() {
+		disableMotors();
+		
+		enableMotors(ControlMode.PercentVbus, 0.0, 0.0);
+	}
+
+	/**
+	 * Sets speed on drivetrain motors. If control mode is "kPercentVBus", this is a value from -1 to 1.
+	 * If control mode is "kPosition," this is the setpoint of the PID loop.
+	 * 
+	 * @param leftSet Setpoint for left drive motors (dependent on control mode)
+	 * @param rightSet Setpoint for right drive motors (dependent on control mode)
+	 */
+    public void drive(double leftSet, double rightSet) {
+    	frontLeft.set(leftSet);
+    	frontRight.set(rightSet);
+    	rearLeft.set(RobotMap.frontLeft);
+    	rearRight.set(RobotMap.frontRight);
+    }
+    
+    private void enableMotors(ControlMode controlMode, double initLeftSetpoint, double initRightSetpoint) {
 		frontLeft.changeControlMode(controlMode);
 		frontRight.changeControlMode(controlMode);
-		rearLeft.changeControlMode(controlMode);
-		rearRight.changeControlMode(controlMode);
+		
+		drive(initLeftSetpoint, initRightSetpoint);
 		
 		frontLeft.enableControl();
 		frontRight.enableControl();
 		rearLeft.enableControl();
 		rearRight.enableControl();
 	}
-	
-    public void drive(double leftSpeed, double rightSpeed) {
-    	frontLeft.set(leftSpeed);
-    	frontRight.set(rightSpeed);
-    	rearLeft.set(leftSpeed);
-    	rearRight.set(rightSpeed);
-    }
     
-    public void disableMotors() {
-    	frontLeft.disableControl();
-    	frontRight.disableControl();
-    	rearLeft.disableControl();
-    	rearRight.disableControl();
+    private void disableMotors() {
+    	if (frontLeft.isControlEnabled()) { // Redundant to make each their own statement; never enabled individually
+    		frontLeft.disableControl();
+        	frontRight.disableControl();
+        	rearLeft.disableControl();
+        	rearRight.disableControl();
+    	}
     }
 
     public void initDefaultCommand() {

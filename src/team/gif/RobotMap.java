@@ -18,10 +18,6 @@ public class RobotMap {
     public static final int toteGrabber = 8;
     
     // DIO ports
-    public static final int leftEncoderA = 0;
-    public static final int leftEncoderB = 1;
-    public static final int rightEncoderA = 2;
-    public static final int rightEncoderB = 3;
     public static final int elevatorA = 4;
     public static final int elevatorB = 5;
     

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * @author PatrickUbelhor
- * TODO: Convert into a PID loop.
  */
 public class AutoDriveStraight extends Command {
 	
@@ -18,18 +17,17 @@ public class AutoDriveStraight extends Command {
     }
 
     protected void initialize() {
-    	Robot.chassis.resetEncoders();
     }
 
     protected void execute() {
     	Robot.chassis.drive(0.4, 0.4);
-    	SmartDashboard.putNumber("Left distance:", Robot.chassis.getLeftDist());
-    	SmartDashboard.putNumber("Right distance:", Robot.chassis.getRightDist());
-    	SmartDashboard.putNumber("Combined distance", (Robot.chassis.getLeftDist() + Robot.chassis.getRightDist()) / 2);
+    	SmartDashboard.putNumber("Left ticks:", Robot.chassis.getLeftTicks());
+    	SmartDashboard.putNumber("Right ticks:", Robot.chassis.getRightTicks());
+    	SmartDashboard.putNumber("Combined distance", (Robot.chassis.getLeftTicks() + Robot.chassis.getRightTicks()) / 2);
     }
 
     protected boolean isFinished() {
-        return ((Robot.chassis.getLeftDist() + Robot.chassis.getRightDist()) / 2) > setPointDistance;
+        return ((Robot.chassis.getLeftTicks() + Robot.chassis.getRightTicks()) / 2) > setPointDistance;
     }
 
     protected void end() {

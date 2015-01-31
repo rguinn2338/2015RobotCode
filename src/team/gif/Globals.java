@@ -14,4 +14,11 @@ public class Globals {
 	public static final double encoderDistPerTick = 0.1256;
 	public static final boolean leftEncoderReversed = false;
 	public static final boolean rightEncoderReversed = false;
+	
+	public static final boolean leftMotorReversed = false;
+	public static final boolean rightMotorReversed = false;
+	
+	public static final double drivetrainP = 1;
+	public static final double drivetrainI = 0;
+	public static final double drivetrainD = 0;
 }
