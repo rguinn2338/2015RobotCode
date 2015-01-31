@@ -1,6 +1,7 @@
 package team.gif.subsystems;
 
 import team.gif.RobotMap;
+import team.gif.commands.ElevatorStandby;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.Encoder;
@@ -11,9 +12,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 
 public class Elevator extends Subsystem {
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
 	
 	private static final CANTalon elevator = new CANTalon(RobotMap.elevator);
 	private static final Encoder height = new Encoder(RobotMap.elevatorA, RobotMap.elevatorB);
@@ -32,16 +30,16 @@ public class Elevator extends Subsystem {
 		elevator.enableControl();
 	}
 	
+	public void setSpeed(double speed) {
+    	elevator.set(speed);
+    }
+	
 	public void disableMotors() {
 		elevator.disableControl();
 	}
 	
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new ElevatorStandby());
     }
     
-    public void setSpeed(double speed) {
-    	elevator.set(speed);
-    }
 }
