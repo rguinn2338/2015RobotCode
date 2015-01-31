@@ -1,27 +1,31 @@
 package team.gif.commands;
 
-import team.gif.OI;
 import team.gif.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * @author PatrickUbelhor
  */
-public class TankDriveLinear extends Command {
+public class AutoDrivePID extends Command {
 
-    public TankDriveLinear() {
+	private double leftSet;
+	private double rightSet;
+	
+    public AutoDrivePID(double leftSetpoint, double rightSetpoint) {
         requires(Robot.chassis);
+        leftSet = leftSetpoint;
+        rightSet = rightSetpoint;
     }
 
     protected void initialize() {
     }
 
     protected void execute() {
-    	Robot.chassis.drive(OI.leftStick.getY(), OI.rightStick.getY());
+    	Robot.chassis.drive(leftSet, rightSet);
     }
 
     protected boolean isFinished() {
-        return false;
+        return false; // Need to return true at some point
     }
 
     protected void end() {
