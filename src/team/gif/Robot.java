@@ -1,6 +1,7 @@
 
 package team.gif;
 
+import team.gif.commands.InitElevator;
 import team.gif.commands.*;
 import team.gif.subsystems.*;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -19,7 +20,11 @@ public class Robot extends IterativeRobot {
 
 	public static final Drivetrain chassis = new Drivetrain();
 	public static OI oi;
+	
+	public static final Elevator elevator = new Elevator();
 
+	Command driveInit;
+	Command elevInit;
 	Command driveInitAuto;
 	Command driveInitTeleop;
 	
@@ -29,15 +34,15 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
+		
+		elevInit = new InitElevator();
+		elevInit.start();
+		
 		driveInitAuto = new InitDrivetrainAuto();
 		driveInitTeleop = new InitDrivetrainTeleop();
 		
 		driveInitAuto.start();
     }
-	
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
@@ -69,6 +74,10 @@ public class Robot extends IterativeRobot {
     public void disabledInit(){
 
     }
+    
+    public void disabledPeriodic() {
+		Scheduler.getInstance().run();
+	}
     
     /**
      * This function is called periodically during test mode
