@@ -33,6 +33,9 @@ public class OI {
 	private static Button aux2;
 	private static Button aux3;
 	private static Button aux4;
+	private static Button aux5;
+	private static Button aux6;
+	private static Button aux7;
 	
 	public OI() {
 		leftTrigger = new JoystickButton(leftStick, 1);
@@ -55,6 +58,9 @@ public class OI {
 		right2.whenReleased(new TankDriveSquared());
 		right4.whenReleased(new AutoDriveStraight(3.0));
 		right5.whenReleased(new AutoDriveStraight(6.0));
+		
+		aux6.whileActive(new ElevatorRaise(0));
+		aux7.whileActive(new ElevatorLower(0));
 	}
 	
 }
